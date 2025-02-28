@@ -23,7 +23,21 @@ struct FetchView: View {
                     .padding()
             } else {
                 List(searchFilter) { user in
-                    Text("\(user.firstName) \(user.lastName)")
+                    HStack{
+                        AsyncImage(url: URL(string: user.image)){phase in
+                            if let image = phase.image {
+                                image.resizable()
+                                    .scaledToFit()
+                                    .frame(width: 50, height: 50)
+                            } else if phase.error != nil {
+                                Text("Error loading image")
+                                    .foregroundColor(.red)
+                            } else {
+                                ProgressView()
+                            }
+                        }
+                        Text("\(user.firstName) \(user.lastName)")
+                    }
                 }
             }
         }
