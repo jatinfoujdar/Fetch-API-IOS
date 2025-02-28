@@ -38,7 +38,20 @@ class NetworkManager{
             throw error
         }
     }
+    
+    
+    static func searchfilter(users: [User], searchText: String)-> [User]{
+        guard !searchText.isEmpty else {return users}
+        
+        return users.filter{ user in
+            
+            user.firstName.lowercased().contains(searchText.lowercased()) ||
+            user.lastName.lowercased().contains(searchText.lowercased()) ||
+            user.username.lowercased().contains(searchText.lowercased())
+        }
+    }
 }
+
 
 
 
