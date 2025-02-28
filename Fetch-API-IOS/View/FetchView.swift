@@ -1,15 +1,32 @@
-//
-//  FetchView.swift
-//  Fetch-API-IOS
-//
-//  Created by jatin foujdar on 28/02/25.
-//
+
 
 import SwiftUI
 
 struct FetchView: View {
+    @State private var users : [User] = []
+    @State private var  errorMessage : String?
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            if let errorMessage = errorMessage {
+                Text("Error: \(errorMessage)")
+                    .foregroundColor(.red)
+                    .padding()
+            } else {
+                List(users) { user in
+                    Text("\(user.firstName) \(user.lastName)")
+                }
+            }
+        }
+        .onAppear{
+            Task{
+                do{
+                    users = try await NetworkManager.shared.ApiFetch()
+                }
+                catch{
+                    errorMessage = error.localizedDescription
+                }
+            }
+        }
     }
 }
 

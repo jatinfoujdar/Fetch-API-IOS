@@ -4,7 +4,12 @@ import Foundation
 
 class NetworkManager{
     
+    
+    static let shared = NetworkManager()
+    
     private let apiUrl = "https://dummyjson.com/users"
+    
+    private init() {}
     
     func ApiFetch() async throws -> [User]{
         guard let url = URL(string: apiUrl) else{
@@ -16,6 +21,10 @@ class NetworkManager{
         
         
         let (data, response) = try await URLSession.shared.data(for: req)
+        
+        if let jsondata = String(data:data, encoding: .utf8){
+            print(jsondata)
+        }
         
         guard (response as? HTTPURLResponse)?.statusCode == 200 else {
             throw URLError(.badServerResponse)
