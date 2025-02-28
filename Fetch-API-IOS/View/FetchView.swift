@@ -7,6 +7,10 @@ struct FetchView: View {
     @State private var errorMessage : String?
     @State private var searchText : String = ""
     
+    var searchFilter : [User]{
+        NetworkManager.searchfilter(users: users, searchText: searchText)
+    }
+    
     var body: some View {
         VStack {
             TextField("Search", text: $searchText)
@@ -18,7 +22,7 @@ struct FetchView: View {
                     .foregroundColor(.red)
                     .padding()
             } else {
-                List(users) { user in
+                List(searchFilter) { user in
                     Text("\(user.firstName) \(user.lastName)")
                 }
             }
