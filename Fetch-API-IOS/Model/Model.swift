@@ -22,7 +22,7 @@ struct User: Identifiable, Codable {
         case image
     }
     
-    // Custom initializer
+  
     init(id: Int, firstName: String, lastName: String, username: String, password: String, image: String, isFavorite: Bool = false) {
         self.id = id
         self.firstName = firstName
@@ -33,7 +33,7 @@ struct User: Identifiable, Codable {
         self.isFavorite = isFavorite
     }
     
-    // Custom init from decoder
+  
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int.self, forKey: .id)
@@ -42,13 +42,13 @@ struct User: Identifiable, Codable {
         username = try container.decode(String.self, forKey: .username)
         password = try container.decode(String.self, forKey: .password)
         image = try container.decode(String.self, forKey: .image)
-        isFavorite = false // Default value since it's not in the API
+        isFavorite = false
     }
     
   
 }
 
-// Response structure from API
+
 struct UserResponse: Codable {
     let users: [User]
 }
