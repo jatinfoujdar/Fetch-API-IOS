@@ -1,11 +1,10 @@
-
-
 import SwiftUI
 
 struct FetchView: View {
     @State private var users : [User] = []
     @State private var errorMessage : String?
     @State private var searchText : String = ""
+    @State private var isSorted: Bool = false
     
     var searchFilter : [User]{
         NetworkManager.searchfilter(users: users, searchText: searchText)
@@ -13,11 +12,16 @@ struct FetchView: View {
     
     var body: some View {
         VStack {
+            HeaderView()
             TextField("Search", text: $searchText)
             .padding()
             .textFieldStyle(RoundedBorderTextFieldStyle())
             
-            if let errorMessage = errorMessage {
+            if users.isEmpty{
+                ProgressView()
+            }
+            
+            else if let errorMessage = errorMessage {
                 Text("Error: \(errorMessage)")
                     .foregroundColor(.red)
                     .padding()
@@ -30,7 +34,10 @@ struct FetchView: View {
                                     .scaledToFit()
                                     .frame(width: 50, height: 50)
                             } else if phase.error != nil {
-                                Text("Error loading image")
+                                Image(systemName: "person.fill")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 50, height: 50)
                                     .foregroundColor(.red)
                             } else {
                                 ProgressView()
@@ -56,4 +63,5 @@ struct FetchView: View {
 
 #Preview {
     FetchView()
+        .preferredColorScheme(.dark)
 }
