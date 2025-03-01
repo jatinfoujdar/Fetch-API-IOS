@@ -5,6 +5,7 @@ struct FetchView: View {
     @State private var errorMessage : String?
     @State private var searchText : String = ""
     @State private var isSorted: Bool = false
+    @State private var showFavoritesOnly: Bool = false 
     
     var searchFilter : [User]{
         NetworkManager.searchfilter(users: users, searchText: searchText)
@@ -26,6 +27,7 @@ struct FetchView: View {
                     .foregroundColor(.red)
                     .padding()
             } else {
+              
                 List(searchFilter) { user in
                     HStack{
                         AsyncImage(url: URL(string: user.image)){phase in
@@ -44,6 +46,15 @@ struct FetchView: View {
                             }
                         }
                         Text("\(user.firstName) \(user.lastName)")
+                        Spacer()
+                        Button(action: {
+                            if let index = users.firstIndex(where: { $0.id == user.id }) {
+                                users[index].isFavorite.toggle()
+                            }
+                        }) {
+                            Image(systemName: user.isFavorite ? "star.fill" : "star")
+                                .foregroundStyle(user.isFavorite ? .yellow : .gray)
+                        }
                     }
                 }
             }
